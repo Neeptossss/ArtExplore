@@ -1,6 +1,7 @@
 <template>
-<div id="authentication-modal" tabindex="-1" aria-hidden="true" class="fixed z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-modal md:h-full flex items-center justify-center">
-    <div class="relative w-full h-full max-w-md md:h-auto">
+<div id="authentication-modal" tabindex="-1" aria-hidden="true" class="fixed w-full h-full z-50 p-4 overflow-x-hidden overflow-y-auto h-modal md:h-full flex items-center justify-center">
+    <div class="absolute w-full h-full bg-gray-900 opacity-70" @click="$emit('close')"></div>
+    <div class="relative w-full max-w-md md:h-auto">
         <div class="relative bg-white rounded-lg shadow">
             <div class="px-6 py-6 lg:px-8">
                 <h3 class="text-xl font-medium text-gray-900">Rejoindre une session</h3>
