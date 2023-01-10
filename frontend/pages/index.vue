@@ -6,9 +6,9 @@
         <button class="w-full bg-red-600 rounded-md p-4 text-white font-bold" @click="showModal = true">
           <i class="bx bxs-compass"></i> Commencez l'aventure !
         </button>
-        <button class="w-full border-red-600 border-2 rounded-md p-4 text-white font-bold">
+        <nuxt-link to="/leaderboard" class="w-full border-red-600 border-2 rounded-md p-4 text-white text-center font-bold">
           <i class="bx bxs-bar-chart-alt-2"></i> Tableau des scores
-        </button>
+        </nuxt-link>
       </div>
       <transition name="fade">
         <Modal v-if="showModal" @close="showModal = false" />
