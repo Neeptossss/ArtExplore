@@ -6,7 +6,7 @@
         <i class="bx bxs-compass"></i> Commencez l'aventure !
       </button>
     </div>
-    <Tutorial />
+    <Modal />
   </div>
 </template>
 
