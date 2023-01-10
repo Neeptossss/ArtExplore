@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  frontend:
+    container_name: artexplore-frontend
+    build: ./frontend
+    restart: on-failure
+    networks:
+      - back-tier
+    ports:
+      - "3000:3000"
+
+  backend:
+    container_name: artexplore-backend
+    build: ./backend
+    ports:
+      - "5000:5000"
+
+  db:
+    container_name: artexplore-db
+    image: mariadb:latest
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: artexplore
+      MYSQL_USER: artexplore
+      MYSQL_PASSWORD: artexplore
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
+
+networks:
+  back-tier:
+    driver: bridge
