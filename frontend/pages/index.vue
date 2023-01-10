@@ -11,7 +11,7 @@
         </nuxt-link>
       </div>
       <transition name="fade">
-        <Modal v-if="showModal" @close="showModal = false" />
+        <Modal v-if="showModal" @close="showModal = false" @validate="redirectSession" />
       </transition>
     </div>
   </div>
@@ -23,6 +23,12 @@ export default {
   data() {
     return {
       showModal: false
+    }
+  },
+  methods: {
+    redirectSession() {
+      this.showModal = false;
+      this.$router.push({ path : '/session' });
     }
   }
 }

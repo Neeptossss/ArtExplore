@@ -6,10 +6,10 @@
             <div class="px-6 py-6 lg:px-8">
                 <h3 class="text-xl font-medium text-gray-900">Rejoindre une session</h3>
                 <p class="text-sm text-gray-400 mb-4"> Entrez le code de session fourni par votre guide pour rejoindre la session. </p>
-                <form class="space-y-6" action="#">
+                <div class="space-y-6">
                     <div>
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Votre nom</label>
-                        <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Albert Tartenpion" required>
+                        <input type="text" name="name" id="name" v-model="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Albert Tartenpion" required>
                     </div>
                     <div>
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Code de la session</label>
@@ -24,7 +24,7 @@
                     <div class="text-sm font-medium text-gray-500">
                         Un problème? <a href="#" class="text-red-600 hover:underline">Centre d'aide</a>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -36,6 +36,7 @@ export default {
     data() {
         return {
             pin: ['','','',''],
+            name: '',
         }
     },
     computed: {
@@ -60,8 +61,11 @@ export default {
             let pin = this.pin.join('')
             if(pin === '1234'){
                 //valid pin
-                this.$emit('close')
-                // any other actions
+                this.$emit('validate');
+                localStorage.setItem('sessionPin', pin);
+                localStorage.setItem('sessionName', this.name);
+                let myPlayer = { name: this.name, pin: pin}
+                this.$store.commit('player/setMyPlayer', myPlayer);
             }else{
                 // invalid pin
                 this.pin = ['','','','']
@@ -71,7 +75,3 @@ export default {
     }
 }
 </script>
-
-<style>
-</style>
-
