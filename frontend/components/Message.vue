@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div class="flex items-center gap-4">
-      <img class="w-12 h-12 rounded-full" :src="require(`@/static/${avatar}.png`)" />
-      <p :ref="refName" class="text-white font-bold" :class="{ 'text-right': fromMe }">
-      </p>
+    <div class="flex gap-3 w-screen px-4" :class="{ 'flex-row-reverse': fromMe }">
+      <img class="w-10 h-10 rounded-full" :src="require(`@/static/${avatar}.png`)" />
+      <div>
+        <p :ref="refName" class="text-white" :class="{ 'text-right': fromMe }">
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -31,20 +33,23 @@ export default {
   },
   methods: {
     typeWriter() {
-        let i = 0
-        let output = ''
-        let intervalId = setInterval(() => {
-            if (i < this.text.length) {
-                output += this.text[i]
-                this.$refs[this.refName].innerHTML =
-                    output + '<span class="caret">|</span>'
-                i++
-            } else {
-                clearInterval(intervalId)
-                this.$refs[this.refName].innerHTML = output
-            }
-        }, 100)
-    },
+    let i = 0;
+    let output = '';
+    let timeout = 0;
+    let typeChar = () => {
+        if (i < this.text.length) {
+            output += this.text[i];
+            this.$refs[this.refName].innerHTML = output + '<span class="caret">|</span>';
+            i++;
+            timeout = Math.floor(Math.random() * (50 - 1 + 1) + 1);
+            setTimeout(typeChar, timeout);
+        } else {
+            this.$refs[this.refName].innerHTML = output;
+        }
+    }
+    typeChar();
+}
+
   },
 
     mounted() {

@@ -20,7 +20,7 @@
                         <input ref="pinInputs" type="number" v-model="pin[3]" @keyup.enter="submit" @keyup="nextInput($event, 3)" @input="limitInput" maxlength="1" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-red-500 focus:border-red-500 w-12 h-12 mr-2 text-center" placeholder="_" required>
                         </div>
                     </div>
-                    <button :class="{'bg-red-800': !allFieldsCompleted }" :disabled="!allFieldsCompleted" @click="submit" class="w-full text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Rejoindre la session</button>
+                    <button :class="{'bg-gray-300': !allFieldsCompleted }" :disabled="!allFieldsCompleted" @click="submit" class="w-full text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Rejoindre la session</button>
                     <div class="text-sm font-medium text-gray-500">
                         Un problème? <a href="#" class="text-red-600 hover:underline">Centre d'aide</a>
                     </div>
