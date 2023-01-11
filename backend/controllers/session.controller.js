@@ -1,7 +1,7 @@
 const Session = require('../models/session.model');
 
-exports.findById = (req, res) => {
-    Session.findById(req.params.id, (err, data) => {
+exports.findPinById = (req, res) => {
+    Session.getPinById(req.params.id, (err, data) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
