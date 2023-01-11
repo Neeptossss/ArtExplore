@@ -8,20 +8,20 @@ services:
     networks:
       - back-tier
     ports:
-      - "3000:3000"
+      - "8080:8080"
 
   backend:
     container_name: artexplore-backend
     build: ./backend
     ports:
-      - "5000:5000"
+      - "3000:3000"
 
   db:
     container_name: artexplore-db
     image: mariadb:latest
     restart: on-failure
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: artexplore
       MYSQL_DATABASE: artexplore
       MYSQL_USER: artexplore
       MYSQL_PASSWORD: artexplore
