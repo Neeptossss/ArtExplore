@@ -1,4 +1,5 @@
 export default {
+  ssr: false,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'artexplore',
@@ -12,10 +13,7 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-    '@/assets/css/main.css',
-    'boxicons/css/boxicons.min.css',
-  ],
+  css: ['@/assets/css/main.css', 'boxicons/css/boxicons.min.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [{ src: '~/plugins/persistedState.client.js' }],
@@ -52,6 +50,8 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: ['three'],
+    babel: { compact: true },
     postcss: {
       plugins: {
         tailwindcss: {},

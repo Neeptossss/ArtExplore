@@ -2,19 +2,31 @@ import glob
 import os
 import imagehash
 from PIL import Image
+from flask import Flask, jsonify, request
+from werkzeug.utils import secure_filename
 
-# Open the target image
-target_image = Image.open('goat_photo_test.jpg')
-#target_image = target_image.resize((720, 648))
-target_hash = imagehash.phash(target_image)
+app = Flask(__name__)
 
-image_list = glob.glob(os.path.join('./', '*.jpg'))
+app.config['UPLOAD_FOLDER'] = './upload'
+app.config['MAX_CONTENT_PATH'] = 1000000000000 * 1000000000000
 
-# Open the comparison images
-comparison_images = [Image.open(f) for f in ['goat_photo.jpg']]
-comparison_hashes = [imagehash.phash(img) for img in comparison_images]
+@app.route('/api/compare', methods=['POST'])
 
-# Compare the target image with each comparison image
-for i, comparison_hash in enumerate(comparison_hashes):
-    similarity = target_hash - comparison_hash
-    print(f'Similarity with image {i+1}: {similarity}')
+def compare():
+    f = request.files['file']
+    f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
+    target_image = Image.open('./upload/' + secure_filename(f.filename))
+    target_hash = imagehash.phash(target_image)
+
+    image_list = glob.glob(os.path.join('./stockPicture', '*.jpg'))
+    comparison_images = [Image.open(f) for f in image_list]
+    comparison_hashes = [imagehash.phash(img) for img in comparison_images]
+
+    similarity = []
+    for i, comparison_hash in enumerate(comparison_hashes):
+        similarity.append((target_hash - comparison_hash, image_list[i]))
+
+    return jsonify(min(similarity))
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
