@@ -7,6 +7,8 @@ services:
     restart: always
     networks:
       - back-tier
+    environment:
+      - API_URL=${API_URL}
     ports:
       - "8080:8080"
 
@@ -40,7 +42,17 @@ services:
       - ${DATABASE_PORT}:3306
     volumes:
       - ./database/init.sql:/docker-entrypoint-initdb.d/01.sql
+      - ./database/data.sql:/docker-entrypoint-initdb.d/02.sql
       - db-data:/var/lib/mysql
+
+  python:
+    container_name: artexplore-python
+    build: ./python
+    restart: always
+    networks:
+      - back-tier
+    ports:
+      - "5000:5000"
 
 volumes:
   db-data:
