@@ -92,6 +92,7 @@ export default {
       if (this.selectedIndex !== index) {
         this.selectedIndex = index
         if (answer.valid === 99) this.$emit('finished');
+        if (answer.valid === 100) this.$emit('enigma-validation');
         if (answer.valid === 1) {
           this.markAsCorrect();
           this.$emit('finished');

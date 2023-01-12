@@ -114,4 +114,17 @@ Session.setNextStep = (pin, result) => {
   });
 }
 
+Session.getDefaultMessage = (id, result) => {
+  sql.query(`SELECT * FROM default_answer WHERE id = ${id}`, (err, res) => {
+    if (err) {
+      debug("error: ", err);
+      result(null, err);
+      return;
+    }
+    debug(res);
+    result(null, res);
+  });
+}
+
+
 module.exports = Session;

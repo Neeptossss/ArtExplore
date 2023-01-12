@@ -5,5 +5,6 @@ module.exports = app => {
     router.get("/:pin/getcurrentqa", session.getCurrentQuestionAndAnswers);
     router.get("/:pin/getpastqa", session.getPastEnigmasQuestionsAndAnswers);
     router.get("/:pin/nextstep", session.setNextStep);
+    router.get("/getdefaultmessage/:id", session.getDefaultMessage);
     app.use("/session", router);
 }
