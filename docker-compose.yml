@@ -28,6 +28,15 @@ services:
     volumes:
       - db-data:/var/lib/mysql
 
+  python:
+    container_name: artexplore-python
+    build: ./python
+    restart: always
+    networks:
+      - back-tier
+    ports:
+      - "5000:5000"
+
 volumes:
   db-data:
 
