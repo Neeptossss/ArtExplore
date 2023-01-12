@@ -1,57 +1,117 @@
 const sql = require("./db.js");
+const debug = require('debug')('app:session.model')
 
-const Film = function (film) {
-  this.title = film.title;
-  this.release_date = film.release_date;
-  this.vote = film.vote;
-  this.overview = film.overview;
-  this.poster = film.poster;
-  this.genre_id = film.genre_id;
-  this.genre_name = film.genre_name;
-  this.backdrop = film.backdrop;
-  this.popularity = film.popularity;
-  this.videos = film.videos;
-  this.subtitles = film.subtitles;
+const Session = function (session) {
+  this.id = session.id;
+  this.pin = session.pin;
 };
-Film.findById = (id, result) => {
-  sql.query(`SELECT * FROM films WHERE id = ${id}`, (err, res) => {
+
+Session.getPinById = (id, result) => {
+  sql.query(`SELECT * FROM session WHERE id = ${id}`, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      debug("error: ", err);
       result(err, null);
       return;
     }
     if (res.length) {
-      console.log("found film: ", res[0]);
+      debug(res[0])
       result(null, res[0]);
       return;
     }
     result({ kind: "not_found" }, null);
   });
 };
-Film.searchFilms = async (req, res) => {
-  const { title, genre, year } = req.query;
-  let query = `SELECT * FROM films WHERE 1=1`;
-  if (title) {
-    query += ` AND title LIKE '%${title}%'`;
-  }
-  if (genre) {
-    query += ` AND genre_id = ${genre}`;
-  }
-  if (year) {
-    query += ` AND release_date LIKE '%${year}%'`;
-  }
-  const result = await sql.query(query);
-  res.send(result);
-};
-Film.getAll = result => {
-  sql.query("SELECT * FROM films", (err, res) => {
+
+Session.getSessionByPin = (pin, result) => {
+  sql.query(`SELECT * FROM session WHERE pin = ${pin}`, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      debug("error: ", err);
+      result(err, null);
+      return;
+    }
+    if (res.length) {
+      debug(res[0])
+      result(null, res[0]);
+      return;
+    }
+    result({ kind: "not_found" }, null);
+  });
+};
+
+Session.getAll = result => {
+  sql.query("SELECT * FROM session", (err, res) => {
+    if (err) {
+      debug("error: ", err);
       result(null, err);
       return;
     }
-    console.log("users: ", res);
+    debug(res);
     result(null, res);
   });
 };
-module.exports = Film;
+
+Session.getEnigmaId = (step, result) => {
+  sql.query(`SELECT id FROM enigma WHERE order = ${step}`, (err, res) => {
+    if (err) {
+      debug("error: ", err);
+      result(null, err);
+      return;
+    }
+    debug(res);
+    result(null, res);
+  });
+};
+
+Session.getCurrentQuestionAndAnswers = (enigma, result) => {
+  sql.query(`SELECT * FROM question WHERE id_enigma = ${enigma} AS QUESTION
+  INNER JOIN reply AS REPLY ON QUESTION.id = REPLY.id_question`,
+    (err, res) => {
+      if (err) {
+        debug("error: ", err);
+        result(null, err);
+        return;
+      }
+      debug(res);
+      result(null, res);
+    });
+};
+
+Session.getPastEnigmasQuestionsAndAnswers = (step, result) => {
+  sql.query(`SELECT * FROM enigma WHERE order < ${step} AS ENIGMA
+  INNER JOIN question AS QUESTION ON ENIGMA.id = QUESTION.id_enigma
+  INNER JOIN reply AS REPLY ON QUESTION.id = REPLY.id_question`,
+    (err, res) => {
+      if (err) {
+        debug("error: ", err);
+        result(null, err);
+        return;
+      }
+      debug(res);
+      result(null, res);
+    });
+}
+
+Session.nextStep = (id, result) => {
+  sql.query(`UPDATE session SET step = step + 1 WHERE id = ${id}`, (err, res) => {
+    if (err) {
+      debug("error: ", err);
+      result(null, err);
+      return;
+    }
+    debug(res);
+    result(null, res);
+  });
+}
+
+/* It's getting the answer of the question with the id passed in parameter. */
+Session.getQuestionAnswer = (id, result) => {
+  sql.query(`SELECT * FROM reply WHERE id_question = ${id} AND valid = 1`, (err, res) => {
+    if (err) {
+      debug("error: ", err);
+      result(null, err);
+      return;
+    }
+    debug(res);
+    result(null, res);
+  });
+}

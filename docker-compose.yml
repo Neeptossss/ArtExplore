@@ -4,7 +4,7 @@ services:
   frontend:
     container_name: artexplore-frontend
     build: ./frontend
-    restart: on-failure
+    restart: always
     networks:
       - back-tier
     ports:
@@ -13,19 +13,33 @@ services:
   backend:
     container_name: artexplore-backend
     build: ./backend
+    restart: always
+    networks:
+      - back-tier
+    environment:
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_HOST=${DATABASE_HOST}
     ports:
       - "3000:3000"
 
-  db:
-    container_name: artexplore-db
+  mariadb:
     image: mariadb:latest
-    restart: on-failure
+    container_name: artexplore-mariadb
+    restart: always
+    networks:
+      - back-tier
     environment:
-      MYSQL_ROOT_PASSWORD: artexplore
-      MYSQL_DATABASE: artexplore
-      MYSQL_USER: artexplore
-      MYSQL_PASSWORD: artexplore
+      - MARIADB_ROOT_PASSWORD=${DATABASE_PASSWORD}
+      - MARIADB_DATABASE=${DATABASE_NAME}
+      - MARIADB_USER=${DATABASE_USER}
+      - MARIADB_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - ${DATABASE_PORT}:3306
     volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01.sql
       - db-data:/var/lib/mysql
 
   python:
