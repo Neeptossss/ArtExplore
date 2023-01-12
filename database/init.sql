@@ -16,6 +16,20 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `art`
+--
+
+DROP TABLE IF EXISTS `art`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `art` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `default_answer`
 --
 
@@ -26,7 +40,7 @@ CREATE TABLE `default_answer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` longtext DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,8 +54,11 @@ CREATE TABLE `enigma` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` longtext DEFAULT NULL,
   `order` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `art_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `enigma_art_id_fk` (`art_id`),
+  CONSTRAINT `enigma_art_id_fk` FOREIGN KEY (`art_id`) REFERENCES `art` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,7 +75,7 @@ CREATE TABLE `question` (
   PRIMARY KEY (`id`),
   KEY `question_enigma_id_fk` (`id_enigma`),
   CONSTRAINT `question_enigma_id_fk` FOREIGN KEY (`id_enigma`) REFERENCES `enigma` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +93,7 @@ CREATE TABLE `reply` (
   PRIMARY KEY (`id`),
   KEY `answer_question_id_fk` (`id_question`),
   CONSTRAINT `answer_question_id_fk` FOREIGN KEY (`id_question`) REFERENCES `question` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,9 +106,8 @@ DROP TABLE IF EXISTS `session`;
 CREATE TABLE `session` (
   `pin` int(11) DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `enigma_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `session_enigma_id_fk` (`enigma_id`)
+  `step` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -109,7 +125,7 @@ CREATE TABLE `tips` (
   PRIMARY KEY (`id`),
   KEY `tips_enigma_id_fk` (`enigma_id`),
   CONSTRAINT `tips_enigma_id_fk` FOREIGN KEY (`enigma_id`) REFERENCES `enigma` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -121,4 +137,4 @@ CREATE TABLE `tips` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-12 10:53:47
+-- Dump completed on 2023-01-12 15:02:22
