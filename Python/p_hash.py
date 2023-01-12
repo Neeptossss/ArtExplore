@@ -1,5 +1,3 @@
-import glob
-import os
 import imagehash
 from PIL import Image
 from flask import Flask, jsonify, request
@@ -22,4 +20,4 @@ def compare():
     return jsonify(min(similarity))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
