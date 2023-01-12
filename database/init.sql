@@ -16,6 +16,20 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `default_answer`
+--
+
+DROP TABLE IF EXISTS `default_answer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `default_answer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `text` longtext DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `enigma`
 --
 
@@ -25,6 +39,7 @@ DROP TABLE IF EXISTS `enigma`;
 CREATE TABLE `enigma` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` longtext DEFAULT NULL,
+  `order` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -79,6 +94,23 @@ CREATE TABLE `session` (
   KEY `session_enigma_id_fk` (`enigma_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tips`
+--
+
+DROP TABLE IF EXISTS `tips`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tips` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `text` longtext DEFAULT NULL,
+  `enigma_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tips_enigma_id_fk` (`enigma_id`),
+  CONSTRAINT `tips_enigma_id_fk` FOREIGN KEY (`enigma_id`) REFERENCES `enigma` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -89,4 +121,4 @@ CREATE TABLE `session` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-11 16:24:52
+-- Dump completed on 2023-01-12 10:53:47
