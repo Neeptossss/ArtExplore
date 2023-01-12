@@ -3,12 +3,19 @@ import os
 import imagehash
 from PIL import Image
 from flask import Flask, jsonify, request
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+
+app.config['UPLOAD_FOLDER'] = './upload'
+app.config['MAX_CONTENT_PATH'] = 1000000000000 * 1000000000000
+
 @app.route('/api/compare', methods=['POST'])
 
 def compare():
-    target_image = Image.open(request.json['target_image'])
+    f = request.files['file']
+    f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
+    target_image = Image.open('./upload/' + secure_filename(f.filename))
     target_hash = imagehash.phash(target_image)
 
     image_list = glob.glob(os.path.join('./stockPicture', '*.jpg'))
