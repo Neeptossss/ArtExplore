@@ -3,18 +3,16 @@ import os
 import imagehash
 from PIL import Image
 
-# Open the target image
 target_image = Image.open('goat_photo_test.jpg')
-#target_image = target_image.resize((720, 648))
 target_hash = imagehash.phash(target_image)
 
-image_list = glob.glob(os.path.join('./', '*.jpg'))
+image_list = glob.glob(os.path.join('./stockPicture', '*.jpg'))
 
-# Open the comparison images
-comparison_images = [Image.open(f) for f in ['goat_photo.jpg']]
+comparison_images = [Image.open(f) for f in image_list]
 comparison_hashes = [imagehash.phash(img) for img in comparison_images]
 
-# Compare the target image with each comparison image
+similarity = []
 for i, comparison_hash in enumerate(comparison_hashes):
-    similarity = target_hash - comparison_hash
-    print(f'Similarity with image {i+1}: {similarity}')
+    similarity.append((target_hash - comparison_hash, image_list[i]))
+
+print(min(similarity))
