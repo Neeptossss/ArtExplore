@@ -1,3 +1,5 @@
+import glob
+import os
 import imagehash
 from PIL import Image
 from flask import Flask, jsonify, request
@@ -9,7 +11,7 @@ def compare():
     target_image = Image.open(request.json['target_image'])
     target_hash = imagehash.phash(target_image)
 
-    image_list = request.json['image_list']
+    image_list = glob.glob(os.path.join('./stockPicture', '*.jpg'))
     comparison_images = [Image.open(f) for f in image_list]
     comparison_hashes = [imagehash.phash(img) for img in comparison_images]
 
