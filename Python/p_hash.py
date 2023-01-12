@@ -3,7 +3,7 @@ import os
 import imagehash
 from PIL import Image
 
-target_image = Image.open('goat_photo_test.jpg')
+target_image = Image.open('IMG_6956.jpg')
 target_hash = imagehash.phash(target_image)
 
 image_list = glob.glob(os.path.join('./stockPicture', '*.jpg'))
