@@ -2,17 +2,24 @@ import glob
 import os
 import imagehash
 from PIL import Image
+from flask import Flask, jsonify, request
 
-target_image = Image.open('IMG_6956.jpg')
-target_hash = imagehash.phash(target_image)
+app = Flask(__name__)
+@app.route('/api/compare', methods=['POST'])
 
-image_list = glob.glob(os.path.join('./stockPicture', '*.jpg'))
+def compare():
+    target_image = Image.open(request.json['target_image'])
+    target_hash = imagehash.phash(target_image)
 
-comparison_images = [Image.open(f) for f in image_list]
-comparison_hashes = [imagehash.phash(img) for img in comparison_images]
+    image_list = request.json['image_list']
+    comparison_images = [Image.open(f) for f in image_list]
+    comparison_hashes = [imagehash.phash(img) for img in comparison_images]
 
-similarity = []
-for i, comparison_hash in enumerate(comparison_hashes):
-    similarity.append((target_hash - comparison_hash, image_list[i]))
+    similarity = []
+    for i, comparison_hash in enumerate(comparison_hashes):
+        similarity.append((target_hash - comparison_hash, image_list[i]))
 
-print(min(similarity))
+    return jsonify(min(similarity))
+
+if __name__ == '__main__':
+    app.run(debug=True)
