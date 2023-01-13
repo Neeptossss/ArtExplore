@@ -18,7 +18,7 @@ def compare():
     target_image = Image.open('./upload/' + secure_filename(f.filename))
     target_hash = imagehash.phash(target_image)
 
-    image_list = glob.glob(os.path.join('./stockPicture', '*.jpg'))
+    image_list = glob.glob(os.path.join('./stockPicture', '*.JPG'))
     comparison_images = [Image.open(f) for f in image_list]
     comparison_hashes = [imagehash.phash(img) for img in comparison_images]
 
